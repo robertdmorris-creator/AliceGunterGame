@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Style Obby - 100 Stages!</title>
+    <title>Ultimate 100 Stage Obby</title>
     <style>
         body { margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #000; }
         #ui {
@@ -14,12 +14,11 @@
             background: rgba(0, 0, 0, 0.6);
             padding: 15px;
             border-radius: 12px;
-            pointer-events: auto; /* Changed to auto to allow button clicks */
+            pointer-events: auto;
             border: 2px solid rgba(255,255,255,0.1);
             user-select: none;
+            z-index: 10;
         }
-        /* Ensure the mouse look still works by making text non-blocking if needed, 
-           but buttons should be clickable */
         .info-text { pointer-events: none; }
         
         #fullscreen-btn {
@@ -85,6 +84,7 @@
     <div id="controls-hint">CAN YOU BEAT ALL 100 STAGES?</div>
     <div id="win-screen">🎉 CONGRATULATIONS! 🎉<br>YOU BEAT 100 STAGES!</div>
 
+    <!-- Use a reliable CDN for Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         let scene, camera, renderer, player, clock;
@@ -127,6 +127,7 @@
 
             generate100Stages();
 
+            // Create Player Character
             const playerGroup = new THREE.Group();
             const torso = new THREE.Mesh(new THREE.BoxGeometry(1, 1.2, 0.5), new THREE.MeshPhongMaterial({ color: 0x0055ff }));
             torso.position.y = 1.6;
@@ -166,17 +167,16 @@
 
             clock = new THREE.Clock();
 
+            // Controls
             document.addEventListener('keydown', onKeyDown);
             document.addEventListener('keyup', onKeyUp);
-            
-            // Mouse handling updated to avoid conflicts with button clicks
             document.addEventListener('mousedown', (e) => {
                 if (e.target.tagName !== 'BUTTON') isMouseDown = true;
             });
             document.addEventListener('mouseup', () => isMouseDown = false);
             document.addEventListener('mousemove', onMouseMove);
             
-            // Fullscreen Button logic
+            // Fullscreen Button
             document.getElementById('fullscreen-btn').addEventListener('click', toggleFullscreen);
             
             window.addEventListener('resize', onWindowResize);
@@ -187,7 +187,7 @@
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
-                    console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+                    console.log(`Error: ${err.message}`);
                 });
             } else {
                 if (document.exitFullscreen) {
